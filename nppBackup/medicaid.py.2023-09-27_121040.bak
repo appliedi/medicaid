@@ -1,0 +1,43 @@
+import streamlit as st
+import requests
+import pandas as pd
+
+# Set the URL for the API
+API_URL = "https://data.cms.gov/resource/gvik-e3yt.json"
+
+def load_data(service_type=None):
+    """
+    Load data from the API based on the service type provided
+    """
+    params = {}
+    if service_type:
+        params['service_type'] = service_type
+    
+    response = requests.get(API_URL, params=params)
+    
+    if response.status_code == 200:
+        return pd.DataFrame(response.json())
+    else:
+        st.error('Failed to load data from API')
+        return pd.DataFrame()
+
+def app():
+    st.title('Medicare Outpatient Hospitals Report')
+    
+    st.sidebar.header('Filters')
+    service_type = st.sidebar.text_input('Service Type (Leave blank for all types)')
+    
+    st.sidebar.subheader('Instructions')
+    st.sidebar.write('1. Enter a Service Type to filter the report.')
+    st.sidebar.write('2. Leave Service Type blank to view all records.')
+
+    st.header('Report')
+    df = load_data(service_type)
+    
+    if df.empty:
+        st.write('No data available for the provided filters')
+    else:
+        st.dataframe(df)
+
+if __name__ == "__main__":
+    app()
