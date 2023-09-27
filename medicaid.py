@@ -4,7 +4,7 @@ import pandas as pd
 from io import BytesIO
 import base64
 
-API_URL = "https://data.cms.gov/data-api/v1/dataset/ea1882e5-27cd-43fe-aaae-eab50bc1b7d7/data?filter[Rndrng_Prvdr_State_Abrvtn]=FL"
+API_URL = "https://data.cms.gov/data-api/v1/dataset/ea1882e5-27cd-43fe-aaae-eab50bc1b7d7/data?filter[Rndrng_Prvdr_State_Abrvtn]=FL&size=20000"
 
 @st.cache_data  # Replaced st.cache to resolve the deprecation warning
 def load_data():
